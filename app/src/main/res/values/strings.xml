@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Releasing App</string>
+    <string name="button_send">Send</string>
+    <string name="button_login">Login</string>
+    <string name="scan_barcode">Scan ID</string>
+    <string name="switch_account">Switch Account</string>
+    <string name="sgName">Seed Grower: </string>
+    <string name="spaNo">SPA No.:</string>
+    <string name="variety">Variety:</string>
+    <string name="viewBtn">View</string>
+    <string name="palletName">Pallet Name:</string>
+    <string name="quantity">Quantity:</string>
+    <string name="release">Release</string>
+    <string name="copyright">Copyright @ 2020 - RSIS</string>
+
+    <color name="backgroundColor">#f2ebeb</color>
+    <string name="title_activity_transaction">TransactionActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+   <string name="server_success">Success sending to server.</string>
+
+</resources>

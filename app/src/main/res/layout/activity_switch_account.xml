@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SwitchAccountActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="280dp"
+        android:layout_height="211dp"
+        android:layout_above="@+id/btnSelectUser"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/rsis_logo" />
+
+    <Button
+        android:id="@+id/btnSelectUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="SELECT USERS"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:onClick="selectUser"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/btnNewUser"
+        android:layout_below="@id/btnSelectUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="ADD NEW USERS"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:onClick="addNewUser"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:text="@string/copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="0dp"
+        android:textSize="20sp" />
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_scan"
+        android:icon="@mipmap/qr_foreground"
+
+        android:title="Scan" />
+
+
+    <item
+        android:id="@+id/navigation_list"
+        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+        android:title="Transaction List" />
+
+</menu>
