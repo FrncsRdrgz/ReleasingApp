@@ -1,4 +1,4 @@
-package com.example.releasingapp;
+package govph.rsis.releasingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.amitshekhar.DebugDB;
+import com.example.releasingapp.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.releasingapp;
+package govph.rsis.releasingapp;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.releasingapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

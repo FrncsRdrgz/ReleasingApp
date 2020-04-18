@@ -1,4 +1,4 @@
-package com.example.releasingapp;
+package govph.rsis.releasingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.releasingapp.R;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.releasingapp">
+    package="govph.rsis.releasingapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,12 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SelectUserActivity" />
-        <activity android:name=".SeedDetailsActivity" />
-        <activity android:name=".SwitchAccountActivity" />
-        <activity android:name=".ScannedBarcodeActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="govph.rsis.releasingapp.SelectUserActivity" />
+        <activity android:name="govph.rsis.releasingapp.SeedDetailsActivity" />
+        <activity android:name="govph.rsis.releasingapp.SwitchAccountActivity" />
+        <activity android:name="govph.rsis.releasingapp.ScannedBarcodeActivity" />
+        <activity android:name="govph.rsis.releasingapp.LoginActivity" />
+        <activity android:name="govph.rsis.releasingapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,13 +26,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="govph.rsis.releasingapp.HomeActivity"
+            android:parentActivityName="govph.rsis.releasingapp.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="govph.rsis.releasingapp.MainActivity" />
         </activity>
     </application>
 

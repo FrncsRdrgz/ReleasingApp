@@ -1,4 +1,4 @@
-package com.example.releasingapp;
+package govph.rsis.releasingapp;
 
 import org.junit.Test;
 

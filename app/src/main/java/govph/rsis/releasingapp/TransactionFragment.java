@@ -1,9 +1,7 @@
-package com.example.releasingapp;
+package govph.rsis.releasingapp;
 
-import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.releasingapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
