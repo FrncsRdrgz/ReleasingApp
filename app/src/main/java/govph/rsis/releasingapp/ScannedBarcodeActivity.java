@@ -27,7 +27,6 @@ import com.android.volley.toolbox.Volley;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
-import com.example.releasingapp.R;
 import com.google.zxing.Result;
 
 import org.json.JSONException;
@@ -248,7 +247,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
     }
-        /*Log.e(TAG, "onCreate: " + DebugDB.getAddressLog());
+        /*
         database = UserDatabase.getInstance(this);
 
         homeIntent = getIntent();

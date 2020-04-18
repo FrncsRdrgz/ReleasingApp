@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import com.amitshekhar.DebugDB;
-import com.example.releasingapp.R;
 
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e(TAG, "onCreate: "+DebugDB.getAddressLog() );
         database = UserDatabase.getInstance(this);
         checkDb = database.userDao().checkDB();
 

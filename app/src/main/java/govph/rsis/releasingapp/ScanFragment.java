@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.releasingapp.R;
+
 
 public class ScanFragment extends Fragment {
     public static final String TAG = "Scan Fragment";
