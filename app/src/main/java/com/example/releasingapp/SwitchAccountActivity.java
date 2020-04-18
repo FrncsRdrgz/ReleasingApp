@@ -1,35 +1,24 @@
 package com.example.releasingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.amitshekhar.DebugDB;
-
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class SwitchAccountActivity extends AppCompatActivity{
 
     public static final String EXTRA_MESSAGE = "com.example.releasingapp.MESSAGE";
     private static final String TAG = "SwitchAccountActivity";
-    UserDatabase database;
-    Intent intent;
+    private UserDatabase database;
+    private Intent intent;
 
+    TextView tvVersion;
     ArrayList<User> users;
     UsersAdapter adapter;
     RecyclerView rvUsers;
@@ -37,7 +26,15 @@ public class SwitchAccountActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_switch_account);
+        tvVersion = findViewById(R.id.tvVersion);
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            tvVersion.setText("Version: "+ pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void selectUser(View view) {
@@ -47,7 +44,7 @@ public class SwitchAccountActivity extends AppCompatActivity{
 
     public void addNewUser(View view) {
         intent = new Intent(this, ScannedBarcodeActivity.class);
-        intent.putExtra(EXTRA_MESSAGE,"login");
+        intent.putExtra(EXTRA_MESSAGE,"LoginActivity");
         startActivity(intent);
     }
 }

@@ -1,17 +1,19 @@
 package com.example.releasingapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,43 +27,55 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SeedDetailsActivity extends AppCompatActivity {
     public static final String TAG = "SeedDetailsActivity";
-    public static final String EXTRA_MESSAGE = "com.example.releasingapp.MESSAGE";
+    private String response;
     private RecyclerView rvSeed;
-    private LinearLayoutManager linearLayoutManager;
-    private ArrayList<Seed> seedList;
-    Button releasedBtn;
-    Intent intent;
-    String globalId;
-    UserDatabase database;
+    private ArrayList<Seed> seedList = new ArrayList<>();
     TextView textSgName, textOrderNo;
-
-    AlertDialog.Builder builder;
+    UserDatabase database;
+    Intent intent;
+    Button releasedBtn;
+    User user;
+    LayoutInflater inflater;
+    AlertDialog dialog;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seed_details);
-
-        textSgName = (TextView) findViewById(R.id.sgName);
-        textOrderNo = (TextView) findViewById(R.id.orderNo);
         intent = getIntent();
-        String response = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
-        rvSeed = findViewById(R.id.main_list);
-        seedList = new ArrayList<>();
-
+        response = intent.getStringExtra(ScannedBarcodeActivity.EXTRA_RESULT);
         database = UserDatabase.getInstance(this);
-        globalId =database.userDao().isOnline();
+        user = database.userDao().isOnline();
+        rvSeed = findViewById(R.id.main_list);
+        textSgName = findViewById(R.id.sgName);
+        textOrderNo = findViewById(R.id.orderNo);
+        releasedBtn = findViewById(R.id.releaseBtn);
 
-        Log.e(TAG, "test response: "+response );
-        //viewBtn = (Button) findViewById(R.id.viewBtn);
+        inflater = getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(inflater.inflate(R.layout.custom_dialog,null));
+        builder.setCancelable(false);
+        dialog = builder.create();
+
+
+        releasedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+                releasedSeeds();
+            }
+        });
+
+        decodeReponse(response);
+    }
+
+    private void decodeReponse(String response) {
         try {
             JSONArray json = new JSONArray(response);
             if (json != null && json.length() >0) {
@@ -100,37 +114,49 @@ public class SeedDetailsActivity extends AppCompatActivity {
         }
     }
 
-
-
-    public void releasedSeeds(View view) {
-
-        releasedBtn = (Button) findViewById(R.id.releaseBtn);
+    public void releasedSeeds() {
         final String spaNo = textOrderNo.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "http://192.168.1.77/seed_ordering/releasing/api/releaseOrder";
-
+        //final String url = "http://192.168.1.89/seed_ordering/api/releaseOrder";
         //for production
-        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/releasing/api/releaseOrder";
+        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/api/releaseOrder";
         //for staging
-        //final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/releasing/api/releaseOrder";
-        //final String url = "http://192.168.11.106/seed_ordering/releasing/api/releaseOrder/";
+        final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/api/releaseOrder";
+
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //alert dialog
-                        intent = new Intent(SeedDetailsActivity.this,HomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(SeedDetailsActivity.this, R.string.server_success, Toast.LENGTH_SHORT).show();
-
-
+                        dialog.dismiss();
+                        if(response.equals("success")){
+                            new AlertDialog.Builder(SeedDetailsActivity.this)
+                                    .setTitle("Release Successfully")
+                                    .setMessage("This order has been released.")
+                                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            intent = new Intent(SeedDetailsActivity.this,HomeActivity.class);
+                                            finish();
+                                            Toast.makeText(SeedDetailsActivity.this, R.string.server_success, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).show();
+                        }
+                        else{
+                            new AlertDialog.Builder(SeedDetailsActivity.this)
+                                    .setTitle("Error")
+                                    .setMessage("Error on releasing seeds")
+                                    .setNegativeButton("Try Againg",null).show();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        new AlertDialog.Builder(SeedDetailsActivity.this)
+                                .setCancelable(false)
+                                .setMessage("Not connected to server")
+                                .setNegativeButton("Try Again", null).show();
                         Log.e("HttpClient", "error: " + error.toString());
                     }
                 })
@@ -139,15 +165,9 @@ public class SeedDetailsActivity extends AppCompatActivity {
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<>();
                 params.put("orderId",spaNo);
-                params.put("philrice_idno",globalId);
+                params.put("philrice_idno",user.getIdNo());
                 return params;
             }
-            /*@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                return params;
-            }*/
         };
         queue.add(sr);
     }

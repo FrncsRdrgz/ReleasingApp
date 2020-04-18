@@ -14,19 +14,21 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     public static final String EXTRA_MESSAGE = "com.example.releasingapp.MESSAGE";
-   private static int SPLASH_TIME_OUT = 2000;
-   Intent homeIntent;
-   UserDatabase database;
+    private static int SPLASH_TIME_OUT = 2000;
+    Intent homeIntent;
+    UserDatabase database;
     List<User> checkDb;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.e(TAG, "onCreate: "+DebugDB.getAddressLog() );
         database = UserDatabase.getInstance(this);
-        final String user =database.userDao().isOnline();
+        checkDb = database.userDao().checkDB();
 
-        checkDb = database.userDao().fetchAll();
-
+        Log.e(TAG, "onCreate: "+checkDb );
+        user = database.userDao().isOnline();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -37,13 +39,11 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     if(user != null){
                         homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                        homeIntent.putExtra(EXTRA_MESSAGE,user);
                     }
                     else {
                         homeIntent = new Intent(MainActivity.this, SwitchAccountActivity.class);
                     }
                 }
-
                 startActivity(homeIntent);
                 finish();
             }

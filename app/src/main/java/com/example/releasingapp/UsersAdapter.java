@@ -16,21 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
-
-
     private static final String TAG = "UsersAdapter";
-    private Context c;
-    public ArrayList<User> mUsers;
+    List<User> users = new ArrayList<>();
     private UserClicked userClickedListener;
 
-    public UsersAdapter(Context c, ArrayList<User> mUsers) {
-        this.c = c;
-        this.mUsers = mUsers;
+    public void setUsers(List<User> users) {
+        this.users = users;
+        notifyDataSetChanged();
     }
 
-    //interface
     public interface UserClicked {
-        void onUserSwitch(String userID/*value to return*/);
+        void onUserSwitch(User user);
     }
 
     public void setUserClickedListener(UserClicked userClickedListener) {
@@ -45,7 +41,16 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             nameTextView = (TextView) itemView.findViewById(R.id.accountName);
-            //switchButton = (Button) itemView.findViewById(R.id.switchButton);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if(userClickedListener != null && position != RecyclerView.NO_POSITION){
+                        userClickedListener.onUserSwitch(users.get(position));
+                    }
+                }
+            });
         }
     }
 
@@ -62,32 +67,26 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(UsersAdapter.ViewHolder viewHolder, final int position) {
         // Get the data model based on position
-        User users = mUsers.get(position);
+        User user = users.get(position);
 
         // Set item views based on your views and data model
         TextView textView = viewHolder.nameTextView;
-        textView.setText(users.getName());
-        //Button button = viewHolder.switchButton;
-        //button.setText("Switch");
-
-
-        //Listener
-        textView.setOnClickListener(new View.OnClickListener() {
+        textView.setText(user.getName());
+        /*textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (userClickedListener != null) {
                     //getting ticketNumber
-                    userClickedListener.onUserSwitch(mUsers.get(position).getIdNo());
+                    userClickedListener.onUserSwitch(users.get(position).getIdNo());
 
                 }
             }
-        });
+        });*/
 
     }
-
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
-        return mUsers.size();
+        return users.size();
     }
 }

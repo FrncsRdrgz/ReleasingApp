@@ -2,13 +2,23 @@ package com.example.releasingapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,22 +47,222 @@ import java.util.Map;
 
 public class ScannedBarcodeActivity extends AppCompatActivity {
     private static final String TAG = "ScannedBarcodeActivity";
-    public static final String EXTRA_MESSAGE = "com.example.releasingapp.MESSAGE";
-    private String barCode;
+    public static final String EXTRA_RESULT = "com.example.releasingapp.EXTRA_RESULT";
+    private int CAMERA_PERMISSION_CODE = 1;
     private CodeScanner mCodeScanner;
-    UserDatabase database;
-    String globalId;
-    Intent homeIntent;
+    private boolean mPermissionCameraGranted;
+    private UserViewModel userViewModel;
+    private CodeScannerView scannerView;
+    private UserDatabase database;
+    private Intent intent;
+    String sender;
+    private User user;
+    LayoutInflater inflater;
+    AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanned_barcode);
-        Log.e(TAG, "onCreate: " + DebugDB.getAddressLog());
+        database = UserDatabase.getInstance(this);
+        user = database.userDao().isOnline();
+        intent = getIntent();
+        sender = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        scannerView = findViewById(R.id.scanner_view);
+        mCodeScanner = new CodeScanner(this, scannerView);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        inflater = getLayoutInflater();
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setView(inflater.inflate(R.layout.custom_dialog,null));
+        builder.setCancelable(false);
+        dialog = builder.create();
+        scanFunction();
+    }
+
+    public void scanFunction() {
+        if(ContextCompat.checkSelfPermission(ScannedBarcodeActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            mPermissionCameraGranted = true;
+            mCodeScanner.startPreview();
+            mCodeScanner.setDecodeCallback(new DecodeCallback() {
+                @Override
+                public void onDecoded(@NonNull final Result result) {
+                    ScannedBarcodeActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.show();
+                            switch (sender){
+                                case "ScanFragment":
+
+                                    getSeedDetails(result.toString());
+                                    break;
+                                case "LoginActivity":
+                                    loginUser(result.toString());
+                                    break;
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+        else{
+            requestCameraPermission();
+        }
+    }
+    private void requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("Allow this app to access camera to scan your QR CODE.")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(ScannedBarcodeActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+                            mPermissionCameraGranted = true;
+                        }
+                    }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).create().show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+            mPermissionCameraGranted = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mPermissionCameraGranted) {
+            mCodeScanner.startPreview();
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mPermissionCameraGranted) {
+            mCodeScanner.releaseResources();
+        }
+
+    }
+
+    private void getSeedDetails(final String orderId){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        //for production
+        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/api/getOrder";
+        //staging url
+        final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/api/getOrder";
+        //localhost
+        //final String url = "http://192.168.1.89/seed_ordering/api/getOrder";
+
+        StringRequest sr = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        dialog.dismiss();
+                        if(response.isEmpty() || response.equals("[]")) {
+                            new AlertDialog.Builder(ScannedBarcodeActivity.this)
+                                    .setMessage("INCORRECT SPA NUMBER")
+                                    .setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            mCodeScanner.startPreview();
+                                        }
+                                    }).show();
+                        }
+                        else{
+                            intent = new Intent(ScannedBarcodeActivity.this,SeedDetailsActivity.class);
+                            intent.putExtra(EXTRA_RESULT,response);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("HttpClient", "error: " + error.toString());
+                        Toast.makeText(ScannedBarcodeActivity.this, "Not connected to server.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("orderId",orderId);
+                params.put("philrice_idno",user.getIdNo());
+                return params;
+            }
+        };
+
+        queue.add(sr);
+    }
+
+    private void loginUser(String userId) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        //for production
+        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/users/api/" +userId;
+        //for staging url
+        final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/users/api/" +userId;
+        //localhost
+        //final String url = "http://192.168.1.89/seed_ordering/users/api/" + userId;
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response.equals("false")) {
+                    Toast.makeText(ScannedBarcodeActivity.this, "Sorry, invalid Id number", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+
+                        //decoding json object w/out array
+                        JSONObject temp = new JSONObject(response.toString());
+                        String idNo = temp.getString("philrice_idno");
+                        String fullName = temp.getString("fullname");
+                        //checking if idNo already exists in database
+                        if (database.userDao().isExisting(idNo) == 0) {
+                            //inserting new user to database
+                            User user = new User(idNo,fullName,true);
+                            userViewModel.insert(user);
+                        }
+                        else{
+                            User user = new User(idNo,fullName,true);
+                            userViewModel.update(user);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(ScannedBarcodeActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                    intent =  new Intent(ScannedBarcodeActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                VolleyLog.e("Error: " + error);
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest);
+    }
+        /*Log.e(TAG, "onCreate: " + DebugDB.getAddressLog());
         database = UserDatabase.getInstance(this);
 
         homeIntent = getIntent();
         final String sender = homeIntent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        globalId =database.userDao().isOnline();
+        //globalId =database.userDao().isOnline();
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -104,118 +314,8 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
     //get the users from web server
     void responseAction(String x) {
 
-        RequestQueue queue = Volley.newRequestQueue(this);
 
-        //for production
-        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/users/api/" +x;
-        //for staging url
-        //final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/users/api/" +x;
-        //localhost
-        final String url = "http://192.168.1.77/seed_ordering/users/api/" + x;
-        //final String url = "http://192.168.11.106/seed_ordering/users/api/" + x;
-
-        // Request a string response from the provided URL.
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                // Display the first 500 characters of the response string.
-                //textView.setText("Response is: "+ response.substring(0,500));
-
-                if (response.equals("false")) {
-                    Toast.makeText(ScannedBarcodeActivity.this, "Sorry, invalid Id number", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    try {
-
-                        //decoding json object w/out array
-                        JSONObject temp = new JSONObject(response.toString());
-
-                        //int id = temp.getInt("id");
-                        String idNo = temp.getString("philrice_idno");
-                        String fullName = temp.getString("fullname");
-                        //String created_at = temp.getString("created_at");
-                        int status = 1;
-
-                        final int updateStatus = database.userDao().updateStatus();
-
-                        //checking if idNo already exists in database
-                        if (database.userDao().isExisting(idNo) == 0) {
-                            //inserting new user to database
-                            User newUser = new User(idNo,fullName,status);
-                            database.userDao().insertUser(newUser);
-                        }
-                        else{
-                            database.userDao().updateStatusOnline(idNo);
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    Toast.makeText(ScannedBarcodeActivity.this, "Success!", Toast.LENGTH_SHORT).show();
-
-                    //Log.e(TAG, "True " + response);
-                    final String user =database.userDao().isOnline();
-
-                    if(user != null){
-                        Log.e(TAG, "is not null: "+user );
-                        homeIntent = new Intent(ScannedBarcodeActivity.this, HomeActivity.class);
-                        homeIntent.putExtra(EXTRA_MESSAGE,user);
-                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(homeIntent);
-                        finish();
-                    }
-
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                VolleyLog.e("Error: " + error);
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(jsonObjectRequest);
     }
 
-    public void getSeedDetails(final String orderId){
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        //for production
-        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/releasing/api/getOrder";
-        //staging url
-        //final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/releasing/api/getOrder";
-        //localhost
-        final String url = "http://192.168.1.77/seed_ordering/releasing/api/getOrder";
-        //final String url = "http://192.168.11.106/seed_ordering/releasing/api/getOrder";
-
-        StringRequest sr = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        homeIntent = new Intent(ScannedBarcodeActivity.this,SeedDetailsActivity.class);
-                        homeIntent.putExtra(EXTRA_MESSAGE,response);
-                        startActivity(homeIntent);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("HttpClient", "error: " + error.toString());
-                        Toast.makeText(ScannedBarcodeActivity.this, "Not connected to server.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-        {
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                params.put("orderId",orderId);
-                params.put("philrice_idno",globalId);
-                return params;
-            }
-        };
-        queue.add(sr);
-    }
+   */
 }

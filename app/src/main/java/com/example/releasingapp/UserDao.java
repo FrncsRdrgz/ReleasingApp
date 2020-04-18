@@ -1,5 +1,6 @@
 package com.example.releasingapp;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -16,19 +17,16 @@ public interface UserDao {
     String[] getAll(String idNo);*/
 
     @Query("SELECT * FROM user WHERE status = 0")
-    List<User> userAll();
+    LiveData<List<User>> getInactiveUsers();
 
     @Query("select * from user")
-    List<User> fetchAll();
-
-    @Query("SELECT fullName FROM user WHERE idNo =:idNo LIMIT 1")
-    String getUserName(String idNo);
+    List<User> checkDB();
 
     @Query("select * from user where idNo =:idNo")
     int isExisting(String idNo);
 
-    @Query("SELECT idNo from user where status = 1 ")
-    String isOnline();
+    @Query("SELECT * from user where status = 1 ")
+    User isOnline();
 
     @Query("UPDATE user SET status = 0 WHERE status = 1")
     int updateStatus();

@@ -9,15 +9,12 @@ import android.widget.Button;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    public static final String EXTRA_MESSAGE = "com.example.releasingapp.MESSAGE";
     Button btnScanBarcode;
     UserDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
         initViews();
     }
 
@@ -28,9 +25,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
         Intent intent = new Intent(this, ScannedBarcodeActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, "login");
+        intent.putExtra(MainActivity.EXTRA_MESSAGE, "LoginActivity");
         startActivity(intent);
     }
 

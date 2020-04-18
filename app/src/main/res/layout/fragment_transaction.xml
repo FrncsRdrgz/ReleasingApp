@@ -1,14 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".TransactionFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewUser"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@id/tvTransaction"
+        android:gravity="center"
+        android:textSize="18sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTransaction"
+        android:text="List of Transactions"
+        android:gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@id/lTitle"
+        android:textSize="18sp"
+        />
+    <LinearLayout
+        android:id="@+id/lTitle"
+        android:layout_above="@id/rvAllOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/border"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        >
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:id="@+id/sgListName"
+            android:background="@drawable/border"
+            android:text="Full Name"
+            android:layout_weight="2"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:id="@+id/listOrderId"
+            android:background="@drawable/border"
+            android:text="SPA No."
+            android:layout_weight="3"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:id="@+id/listAction"
+            android:background="@drawable/border"
+            android:layout_weight="3"
+            android:text="Status"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/copyright"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/rsis_logo" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAllOrder"
+        android:layout_above="@id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="15dp"
+        android:layout_height="300dp" />
+
+    <TextView
+        android:id="@+id/copyright"
+        android:text="@string/copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/tvVersion"
+        android:textSize="20sp" />
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="2dp"
+        android:textSize="10sp" />
+</RelativeLayout>

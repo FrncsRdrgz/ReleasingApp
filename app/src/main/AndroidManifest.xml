@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TransactionActivity"></activity>
         <activity android:name=".SelectUserActivity" />
         <activity android:name=".SeedDetailsActivity" />
         <activity android:name=".SwitchAccountActivity" />

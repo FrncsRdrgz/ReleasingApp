@@ -1,113 +1,65 @@
 package com.example.releasingapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.amitshekhar.DebugDB;
+import java.util.List;
 
-import java.util.ArrayList;
-
-public class SelectUserActivity extends AppCompatActivity implements UsersAdapter.UserClicked{
-
-    public static final String EXTRA_MESSAGE = "com.example.releasingapp.MESSAGE";
-    private static final String TAG = "SelectUserActivity";
-    UserDatabase database;
-    Intent intent;
-
-    ArrayList<User> users;
-    UsersAdapter adapter;
-    RecyclerView rvUsers;
+public class SelectUserActivity extends AppCompatActivity{
+    private Intent intent;
+    private UserDatabase database;
+    private UsersAdapter adapter;
+    private UserViewModel userViewModel;
+    private RecyclerView recyclerView;
+    TextView tvVersion1;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_user);
+        tvVersion1 = findViewById(R.id.tvVersion1);
+        recyclerView = findViewById(R.id.myAccounts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setHasFixedSize(true);
 
-        database = UserDatabase.getInstance(this);
-        intent = getIntent();
-        final String idNo = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
-        rvUsers = (RecyclerView) findViewById(R.id.myAccounts);
-
-        Log.e(TAG, "onCreate: "+ DebugDB.getAddressLog());
-        // get all the users in User Dao
-        //users = new ArrayList<>();
-        users = getAllUsers();
-        Log.e(TAG, "All users: "+users );
-        rvUsers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rvUsers.setItemAnimator(new DefaultItemAnimator());
-        adapter = new UsersAdapter(this, users);
-        adapter.setUserClickedListener(this);
-        rvUsers.setAdapter(adapter);
-
-
-        /*final String idNo = intent.getStringExtra(HomeActivity.EXTRA_MESSAGE);
-
-        final String[] users = database.userDao().getAll(idNo);
-
-        ListView listView = (ListView) findViewById(R.id.usersList);
-
-        final ArrayAdapter<User> adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,users);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-
+        adapter = new UsersAdapter();
+        recyclerView.setAdapter(adapter);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        userViewModel.getAllInactiveUsers().observe(this, new Observer<List<User>>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // TODO Auto-generated method stub
-                final int updateStatus = database.userDao().updateStatus();
-                Toast.makeText(SwitchAccountActivity.this, users[position], Toast.LENGTH_SHORT).show();
-                String fullName = users[position];
-
-                database.userDao().switchAccount(fullName);
-                final String user =database.userDao().isOnline();
-
-                intent = new Intent(SwitchAccountActivity.this, HomeActivity.class);
-                intent.putExtra(EXTRA_MESSAGE,user);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
+            public void onChanged(List<User> users) {
+                adapter.setUsers(users);
             }
         });
-*/
-    }
 
-    private ArrayList<User> getAllUsers() {
-        ArrayList<User> data = new ArrayList<>();
+        adapter.setUserClickedListener(new UsersAdapter.UserClicked() {
+            @Override
+            public void onUserSwitch(User user) {
+                user.setStatus(true);
+                userViewModel.update(user);
+                intent = new Intent(SelectUserActivity.this,HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-        for (User s : database.userDao().userAll()) {
-            User details = new User(s.getIdNo(), s.fullName, s.status);
-            data.add(details);
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            tvVersion1.setText("Version: "+ pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
-
-        return data;
-    }
-
-    public void onClick(View v) {
-
-        Intent intent = new Intent(this, ScannedBarcodeActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onUserSwitch(String idNo) {
-        Log.e(TAG, "onUserSwitch: " + idNo);
-        Toast.makeText(this, String.valueOf(idNo), Toast.LENGTH_SHORT).show();
-        database.userDao().updateStatus();
-        database.userDao().updateStatusOnline(idNo);
-        final String user =database.userDao().isOnline();
-
-        intent = new Intent(SelectUserActivity.this, HomeActivity.class);
-        intent.putExtra(EXTRA_MESSAGE,user);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 }

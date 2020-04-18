@@ -17,26 +17,24 @@ public class User {
     @ColumnInfo(name = "fullName")
     public String fullName;
 
-
-
     @ColumnInfo(name = "status")
-    public int status;
+    public boolean status;
 
-    public User(String idNo, String fullName,int status) {
+    public User(String idNo, String fullName,boolean status) {
         this.idNo = idNo;
         this.fullName = fullName;
         this.status = status;
     }
 
-    public String getName () {
-        return fullName;
-    }
 
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public String getName () { return fullName; }
+    public void setIdNo(String idNo) { this.idNo = idNo; }
     public  String getIdNo(){
         return idNo;
     }
-
-    public int getStatus(){
+    public void setStatus(boolean status) { this.status = status; }
+    public boolean getStatus(){
         return status;
     }
 }
