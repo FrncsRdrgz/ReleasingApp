@@ -174,6 +174,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
                         Log.e("HttpClient", "error: " + error.toString());
                         Toast.makeText(ScannedBarcodeActivity.this, "Not connected to server.", Toast.LENGTH_SHORT).show();
                     }
@@ -247,65 +248,4 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
     }
-        /*
-        database = UserDatabase.getInstance(this);
-
-        homeIntent = getIntent();
-        final String sender = homeIntent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        //globalId =database.userDao().isOnline();
-        CodeScannerView scannerView = findViewById(R.id.scanner_view);
-        mCodeScanner = new CodeScanner(this, scannerView);
-        mCodeScanner.setDecodeCallback(new DecodeCallback() {
-            @Override
-            public void onDecoded(@NonNull final Result result) {
-                ScannedBarcodeActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Toast.makeText(ScannedBarcodeActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
-                        barCode = result.toString();
-                        //Log.e(TAG, "run: "+barCode );
-                        if(sender.equals("login")) {
-                            Log.e(TAG, "run: login " );
-                            responseAction(barCode);
-                        }else {
-                            getSeedDetails(barCode);
-                        }
-
-
-                    }
-                });
-            }
-        });
-        scannerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCodeScanner.startPreview();
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e(TAG, "onResume: ");
-        mCodeScanner.startPreview();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.e(TAG, "onPause: " + barCode);
-        mCodeScanner.releaseResources();
-        super.onPause();
-
-        //sendRequest();
-
-    }
-
-    //get the users from web server
-    void responseAction(String x) {
-
-
-    }
-
-   */
 }
