@@ -108,11 +108,13 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(ScannedBarcodeActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
                             mPermissionCameraGranted = true;
+
                         }
                     }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    finish();
                 }
             }).create().show();
         } else {
@@ -142,12 +144,8 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
     private void getSeedDetails(final String orderId){
         RequestQueue queue = Volley.newRequestQueue(this);
         //for production
-        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/api/getOrder";
-        //staging url
-        final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/api/getOrder";
-        //localhost
-        //final String url = "http://192.168.1.89/seed_ordering/api/getOrder";
 
+        final String url = DecVar.receiver()+"/getOrder";
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -177,6 +175,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                         dialog.dismiss();
                         Log.e("HttpClient", "error: " + error.toString());
                         Toast.makeText(ScannedBarcodeActivity.this, "Not connected to server.", Toast.LENGTH_SHORT).show();
+                        onBackPressed();
                     }
                 })
         {
@@ -195,24 +194,24 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
     private void loginUser(String userId) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        //for production
-        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/users/api/" +userId;
-        //for staging url
-        final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/users/api/" +userId;
-        //localhost
-        //final String url = "http://192.168.1.89/seed_ordering/users/api/" + userId;
+        final String url = DecVar.receiver()+"/users/"+userId;
 
         // Request a string response from the provided URL.
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
             @Override
-            public void onResponse(JSONObject response) {
-                if (response.equals("false")) {
+            public void onResponse(String response) {
+                Log.e(TAG, "onResponse: "+response );
+                if (response.isEmpty() || response.equals("[]")) {
+
                     Toast.makeText(ScannedBarcodeActivity.this, "Sorry, invalid Id number", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    mCodeScanner.startPreview();
                 } else {
                     try {
 
                         //decoding json object w/out array
-                        JSONObject temp = new JSONObject(response.toString());
+                        JSONObject temp = new JSONObject(response);
                         String idNo = temp.getString("philrice_idno");
                         String fullName = temp.getString("fullname");
                         //checking if idNo already exists in database
@@ -240,12 +239,13 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                dialog.dismiss();
+                Toast.makeText(ScannedBarcodeActivity.this, "Unexpected response error code", Toast.LENGTH_SHORT).show();
                 VolleyLog.e("Error: " + error);
             }
         });
 
         // Add the request to the RequestQueue.
-        queue.add(jsonObjectRequest);
+        queue.add(stringRequest);
     }
 }

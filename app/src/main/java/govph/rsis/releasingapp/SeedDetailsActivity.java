@@ -76,16 +76,18 @@ public class SeedDetailsActivity extends AppCompatActivity {
     }
 
     private void decodeReponse(String response) {
+
         try {
             JSONArray json = new JSONArray(response);
+            //Log.e(TAG, "decodeReponse: "+json.getString(1) );
             if (json != null && json.length() >0) {
+
                 for(int i = 0 ; i < json.length();i++) {
                     JSONObject jsonObject = json.getJSONObject(i);
+                    Log.e(TAG, "decodeReponse:12 "+jsonObject );
+                    String fullname = jsonObject.getString("fullname");
 
-                    String fName = jsonObject.getString("fName");
-                    String lName = jsonObject.getString("lName");
-                    String orderId = jsonObject.getString("orderId");
-                    textSgName.setText(fName+" "+lName);
+                    textSgName.setText(fullname);
                     textOrderNo.setText(jsonObject.getString("orderId"));
 
                     JSONArray jsonArrayVarieties = jsonObject.getJSONArray("varieties");
@@ -94,9 +96,9 @@ public class SeedDetailsActivity extends AppCompatActivity {
 
                         Seed seed = new Seed();
                         seed.setVariety(jsonObjectVariety.getString("variety"));
-                        seed.setpalletName(jsonObjectVariety.getString("palletName"));
+                        seed.setPallet_code(jsonObjectVariety.getString("pallet_code"));
                         seed.setQuantity(jsonObjectVariety.getString("quantity"));
-
+                        seed.setLotCode(jsonObjectVariety.getString("lotCode"));
                         seedList.add(seed);
                     }
                 }
@@ -117,11 +119,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
     public void releasedSeeds() {
         final String spaNo = textOrderNo.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        //final String url = "http://192.168.1.89/seed_ordering/api/releaseOrder";
-        //for production
-        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/api/releaseOrder";
-        //for staging
-        final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/api/releaseOrder";
+        final String url = DecVar.receiver()+"/releaseOrder";
 
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

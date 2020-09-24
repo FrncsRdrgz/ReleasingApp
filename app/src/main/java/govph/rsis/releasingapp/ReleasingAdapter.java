@@ -23,13 +23,14 @@ public class ReleasingAdapter extends RecyclerView.Adapter<ReleasingAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textVariety, textPalletName, textQuantity;
+        public TextView textVariety, textPalletCode, textQuantity, textLotCode;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textVariety = itemView.findViewById(R.id.varietyId);
-            textPalletName = itemView.findViewById(R.id.palletName);
+            textPalletCode = itemView.findViewById(R.id.palletCode);
             textQuantity = itemView.findViewById(R.id.testView);
+            textLotCode = itemView.findViewById(R.id.lotCode);
         }
     }
 
@@ -50,7 +51,8 @@ public class ReleasingAdapter extends RecyclerView.Adapter<ReleasingAdapter.View
 
         viewHolder.textQuantity.setText(seed.getQuantity());
         viewHolder.textVariety.setText(seed.getVariety());
-        viewHolder.textPalletName.setText(String.valueOf(seed.getpalletName()));
+        viewHolder.textPalletCode.setText(seed.getPallet_code());
+        viewHolder.textLotCode.setText(seed.getLotCode());
     }
 
     // Returns the total count of items in the list

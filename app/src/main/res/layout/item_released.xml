@@ -45,13 +45,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/palletName"
             android:background="@drawable/border"
             android:padding="5dp"
-            />
+            android:text="Pallet Code" />
 
         <TextView
-            android:id="@+id/palletName"
+            android:id="@+id/palletCode"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
@@ -62,6 +61,31 @@
     <LinearLayout
         android:id="@+id/l3"
         android:layout_below="@+id/l2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lot Code"
+            android:background="@drawable/border"
+            android:padding="5dp"
+            />
+
+        <TextView
+            android:id="@+id/lotCode"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/l4"
+        android:layout_below="@+id/l3"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -83,4 +107,6 @@
             android:background="@drawable/border"
             android:padding="5dp"/>
     </LinearLayout>
+
+
 </RelativeLayout>

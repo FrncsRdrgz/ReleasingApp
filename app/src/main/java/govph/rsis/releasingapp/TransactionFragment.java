@@ -64,12 +64,8 @@ public class TransactionFragment extends Fragment {
 
     public void getSeedGrowers() {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        //for production
-        //final String url = "https://rsis.philrice.gov.ph/rsis/seed_ordering/api/getAllOrder";
-        //stagingdev
-        final String url = "https://stagingdev.philrice.gov.ph/rsis/seed_ordering/api/getAllOrder";
-        //laptop sa bahay
-        //final String url = "http://192.168.1.89/seed_ordering/api/getAllOrder";
+
+        final String url = DecVar.receiver()+"/getAllOrder";
 
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

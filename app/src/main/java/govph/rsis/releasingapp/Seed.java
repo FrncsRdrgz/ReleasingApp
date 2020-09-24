@@ -2,18 +2,19 @@ package govph.rsis.releasingapp;
 
 public class Seed {
     public String variety;
-    public String palletName;
+    public String pallet_code;
     public String quantity;
+    public String lotCode;
+    /*public Seed() {
 
-    public Seed() {
+    }*/
 
-    }
-
-    public Seed(String variety,String palletName, String quantity) {
+    /*public Seed(String variety,String pallet_code, String quantity,String lotCode) {
         this.variety = variety;
-        this.palletName = palletName;
+        this.pallet_code = pallet_code;
         this.quantity = quantity;
-    }
+        this.lotCode = lotCode;
+    }*/
 
     public String getVariety() {
         return variety;
@@ -21,11 +22,11 @@ public class Seed {
     public void setVariety(String variety) {
         this.variety = variety;
     }
-    public String getpalletName() {
-        return palletName;
+    public String getPallet_code() {
+        return pallet_code;
     }
-    public void setpalletName(String palletName) {
-        this.palletName = palletName;
+    public void setPallet_code(String pallet_code) {
+        this.pallet_code = pallet_code;
     }
     public String getQuantity() {
         return quantity;
@@ -33,4 +34,6 @@ public class Seed {
     public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
+    public String getLotCode() { return lotCode; }
+    public void setLotCode(String lotCode){this.lotCode = lotCode;}
 }
