@@ -1,10 +1,35 @@
 package govph.rsis.releasingapp;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Seed {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "sId")
+    public int sId;
+
+    @ColumnInfo(name = "orderId")
+    public String orderId;
+
+    @ColumnInfo(name = "variety")
     public String variety;
+
+    @ColumnInfo(name="pallet_code")
     public String pallet_code;
+
+    @ColumnInfo(name = "quantity")
     public String quantity;
+
+    @ColumnInfo(name="lotCode")
     public String lotCode;
+
+    @ColumnInfo(name="isVerified")
+    public String verified;
+
+
     /*public Seed() {
 
     }*/
@@ -16,6 +41,8 @@ public class Seed {
         this.lotCode = lotCode;
     }*/
 
+    public String getOrderId(){ return orderId;}
+    public void setOrderId(String orderId){this.orderId = orderId;}
     public String getVariety() {
         return variety;
     }
@@ -36,4 +63,6 @@ public class Seed {
     }
     public String getLotCode() { return lotCode; }
     public void setLotCode(String lotCode){this.lotCode = lotCode;}
+    public String getVerified() { return verified; }
+    public void setVerified(String verified){this.verified = verified;}
 }

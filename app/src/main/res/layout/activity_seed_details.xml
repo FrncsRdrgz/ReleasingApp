@@ -4,78 +4,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="7dp"
-    android:layout_marginEnd="7dp"
     tools:context="govph.rsis.releasingapp.SeedDetailsActivity">
 
-    <LinearLayout
-        android:id="@+id/l1"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_margin="5dp"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/sgName"
-            android:autoSizeTextType="uniform"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/sgName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="20sp"
-            android:background="@drawable/textlines"
-            android:layout_weight="3"
- />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/l2"
-        android:layout_below="@+id/l1"
-        android:orientation="horizontal"
-
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textSize="24sp"
-            android:text="@string/spaNo"
-            />
-
-        <TextView
-            android:id="@+id/orderNo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="20sp"
-            android:background="@drawable/textlines"
-            android:layout_weight="3" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/l3"
-        android:layout_below="@+id/l2"
-        android:orientation="horizontal"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/releaseBtn"
-        android:layout_margin="5dp">
+        android:visibility="invisible"
+        android:id="@+id/frameLayoutScanner">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/main_list"
+        <com.budiyev.android.codescanner.CodeScannerView
+            android:id="@+id/scanner_view2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp" />
-    </LinearLayout>
+            app:autoFocusButtonColor="@android:color/white"
+            app:autoFocusButtonVisible="true"
+            app:flashButtonColor="@android:color/white"
+            app:flashButtonVisible="true"
+            app:frameColor="@android:color/white"
+            app:frameCornersSize="50dp"
+            app:frameCornersRadius="0dp"
+            app:frameAspectRatioWidth="1"
+            app:frameAspectRatioHeight="1"
+            app:frameSize="0.75"
+            app:frameThickness="2dp"
+            app:maskColor="#77000000"/>
+    </FrameLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_above="@id/releaseBtn"
+        android:padding="7dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/l1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/sgName" />
+
+                <TextView
+                    android:id="@+id/sgName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@drawable/textlines"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@+id/l1"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/spaNo"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/orderNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:background="@drawable/textlines"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@+id/l2"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="O.R. No.:"
+
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/orNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="50dp"
+                    android:background="@drawable/textlines"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_below="@+id/l3"
+
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/main_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_released" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
     <Button
         android:id="@+id/releaseBtn"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -14,6 +17,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,19 +35,23 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ScannedBarcodeActivity extends AppCompatActivity {
     private static final String TAG = "ScannedBarcodeActivity";
     public static final String EXTRA_RESULT = "com.example.releasingapp.EXTRA_RESULT";
+    public static final String EXTRA_SPA = "com.example.releasingapp.EXTRA_SPA";
     private int CAMERA_PERMISSION_CODE = 1;
     private CodeScanner mCodeScanner;
     private boolean mPermissionCameraGranted;
     private UserViewModel userViewModel;
+    private SeedViewModel seedViewModel;
     private CodeScannerView scannerView;
     private UserDatabase database;
     private Intent intent;
@@ -162,10 +172,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                                     }).show();
                         }
                         else{
-                            intent = new Intent(ScannedBarcodeActivity.this,SeedDetailsActivity.class);
-                            intent.putExtra(EXTRA_RESULT,response);
-                            startActivity(intent);
-                            finish();
+                            saveSeedDetails(response);
                         }
                     }
                 },
@@ -191,6 +198,53 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
         queue.add(sr);
     }
 
+    private void saveSeedDetails(String response){
+        try {
+            JSONArray json = new JSONArray(response);
+            //Log.e(TAG, "decodeReponse: "+json.getString(1) );
+            if (json != null && json.length() >0) {
+                intent = new Intent(ScannedBarcodeActivity.this,SeedDetailsActivity.class);
+                for(int i = 0 ; i < json.length();i++) {
+                    JSONObject jsonObject = json.getJSONObject(i);
+                    String fullname = jsonObject.getString("fullname");
+
+                    intent.putExtra(EXTRA_RESULT,fullname);
+                    intent.putExtra(EXTRA_SPA,jsonObject.getString("orderId"));
+
+
+                    JSONArray jsonArrayVarieties = jsonObject.getJSONArray("varieties");
+                    for(int x = 0; x< jsonArrayVarieties.length(); x++) {
+                        JSONObject jsonObjectVariety = jsonArrayVarieties.getJSONObject(x);
+
+                        Seed seed = new Seed();
+                        seed.setOrderId(jsonObject.getString("orderId"));
+                        seed.setVariety(jsonObjectVariety.getString("variety"));
+                        seed.setPallet_code(jsonObjectVariety.getString("pallet_code"));
+                        seed.setQuantity(jsonObjectVariety.getString("quantity"));
+                        seed.setLotCode(jsonObjectVariety.getString("lotCode"));
+                        seed.setVerified("0");
+                        Log.e(TAG, "saveSeedDetails: "+ database.seedDao().existing(jsonObject.getString("orderId")));
+
+                        if(database.seedDao().existing(jsonObject.getString("orderId")) > 0){
+
+                        }else{
+                            seedViewModel = ViewModelProviders.of(ScannedBarcodeActivity.this).get(SeedViewModel.class);
+                            seedViewModel.insert(seed);
+                        }
+                    }
+
+                }
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(ScannedBarcodeActivity.this, "Incorrect Spa number.", Toast.LENGTH_SHORT).show();
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     private void loginUser(String userId) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
