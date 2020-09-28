@@ -23,6 +23,9 @@ public interface SeedDao {
     @Query("SELECT count(*) FROM seed WHERE orderId =:orderId AND isVerified = 0")
     int isNotVerified(String orderId);
 
+    @Query("DELETE FROM seed WHERE orderId =:orderId")
+    void deleteById(String orderId);
+
     @Insert
     void insertSeed(Seed seed);
 

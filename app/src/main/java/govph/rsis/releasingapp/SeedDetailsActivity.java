@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.budiyev.android.codescanner.CodeScanner;
@@ -55,7 +57,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
     User user;
     LayoutInflater inflater;
     AlertDialog dialog;
-
+    EditText etOrderNo;
     FrameLayout frameLayout;
     ScrollView scrollView;
 
@@ -74,6 +76,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
         textSgName = findViewById(R.id.sgName);
         textOrderNo = findViewById(R.id.orderNo);
         releasedBtn = findViewById(R.id.releaseBtn);
+        etOrderNo = findViewById(R.id.orNo);
 
         inflater = getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -134,16 +137,90 @@ public class SeedDetailsActivity extends AppCompatActivity {
                             @Override
                             public void run() {
 
-                                if(result.getText().contains(seeds.getPallet_code())){
+                                //scanAuthTag(result.getText(),seeds.getPallet_code());
+                                RequestQueue queue = Volley.newRequestQueue(SeedDetailsActivity.this);
+                                final String url = DecVar.receiver()+"/checkTag/"+result.getText()+"/"+seeds.getPallet_code();
+                                Log.e(TAG, "scanAuthTag: "+url );
+                                // Request a string response from the provided URL.
+                                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.e(TAG, "onResponse: "+response );
+                                        if (response.isEmpty() || response.equals("[]")) {
+                                            new androidx.appcompat.app.AlertDialog.Builder(SeedDetailsActivity.this)
+                                                    .setMessage("Incorrect Tag")
+                                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            mCodeScanner.startPreview();
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            frameLayout = (FrameLayout) findViewById(R.id.frameLayoutScanner);
+                                                            frameLayout.setVisibility(View.INVISIBLE);
+                                                            scrollView = (ScrollView) findViewById(R.id.scrollView);
+                                                            scrollView.setVisibility(View.VISIBLE);
+                                                        }
+                                                    }).show();
+                                            Toast.makeText(SeedDetailsActivity.this, "Sorry, wrong authenticity tag", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            seeds.setVerified("1");
+                                            seeds.setAuthTag(result.getText());
+
+                                            seedViewModel.update(seeds);
+
+
+
+                                            try {
+                                                Toast.makeText(SeedDetailsActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+                                                frameLayout = (FrameLayout) findViewById(R.id.frameLayoutScanner);
+                                                frameLayout.setVisibility(View.INVISIBLE);
+                                                scrollView = (ScrollView) findViewById(R.id.scrollView);
+                                                scrollView.setVisibility(View.VISIBLE);
+                                                //decoding json object w/out array
+                                                JSONObject temp = new JSONObject(response);
+                                                //checking if idNo already exists in database
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            if(seedViewModel.isNotVerified(orderId) > 0){
+                                                Log.e(TAG, "May hindi pa verified " );
+                                            }
+                                            else{
+                                                Log.e(TAG, "Zero na" );
+                                                releasedBtn.setVisibility(View.VISIBLE);
+                                            }
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        dialog.dismiss();
+                                        Toast.makeText(SeedDetailsActivity.this, "Unexpected response error code", Toast.LENGTH_SHORT).show();
+                                        VolleyLog.e("Error: " + error);
+                                    }
+                                });
+
+                                // Add the request to the RequestQueue.
+                                queue.add(stringRequest);
+
+                                /*if(result.getText().contains(seeds.getPallet_code())){
                                     Toast.makeText(SeedDetailsActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                                     frameLayout = (FrameLayout) findViewById(R.id.frameLayoutScanner);
                                     frameLayout.setVisibility(View.INVISIBLE);
                                     scrollView = (ScrollView) findViewById(R.id.scrollView);
                                     scrollView.setVisibility(View.VISIBLE);
-                                    seeds.setVerified("1");
+
+
+                                    *//*seeds.setVerified("1");
                                     database.seedDao().updateSeed(seeds);
                                     scanTag = v.findViewById(R.id.scan_tag);
-                                    seedViewModel.update(seeds);
+                                    seedViewModel.update(seeds);*//*
 
                                     if(seedViewModel.isNotVerified(orderId) > 0){
                                         Log.e(TAG, "May hindi pa verified " );
@@ -164,7 +241,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
                                                     mCodeScanner.startPreview();
                                                 }
                                             }).show();
-                                }
+                                }*/
                             }
                         });
                     }
@@ -185,7 +262,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
     public void releasedSeeds() {
         RequestQueue queue = Volley.newRequestQueue(this);
         final String url = DecVar.receiver()+"/releaseOrder";
-
+        Log.e(TAG, "releasedSeeds: "+etOrderNo.getText().toString() );
         StringRequest sr = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -202,6 +279,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             finish();
                                             Toast.makeText(SeedDetailsActivity.this, R.string.server_success, Toast.LENGTH_SHORT).show();
+                                            seedViewModel.deleteById(orderId);
                                         }
                                     }).show();
                         }
@@ -209,7 +287,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
                             new AlertDialog.Builder(SeedDetailsActivity.this)
                                     .setTitle("Error")
                                     .setMessage("Error on releasing seeds")
-                                    .setNegativeButton("Try Againg",null).show();
+                                    .setNegativeButton("Try Again",null).show();
                         }
                     }
                 },
@@ -229,6 +307,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
             protected Map<String,String> getParams(){
                 Map<String,String> params = new HashMap<>();
                 params.put("orderId",orderId);
+                params.put("or_no",etOrderNo.getText().toString());
                 params.put("philrice_idno",user.getIdNo());
                 return params;
             }

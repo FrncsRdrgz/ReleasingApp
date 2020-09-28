@@ -173,6 +173,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                         }
                         else{
                             saveSeedDetails(response);
+                            dialog.dismiss();
                         }
                     }
                 },

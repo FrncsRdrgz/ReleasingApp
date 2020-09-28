@@ -26,6 +26,8 @@ public class Seed {
     @ColumnInfo(name="lotCode")
     public String lotCode;
 
+    @ColumnInfo(name="authTag")
+    public String authTag;
     @ColumnInfo(name="isVerified")
     public String verified;
 
@@ -65,4 +67,6 @@ public class Seed {
     public void setLotCode(String lotCode){this.lotCode = lotCode;}
     public String getVerified() { return verified; }
     public void setVerified(String verified){this.verified = verified;}
+    public String getAuthTag() { return authTag; }
+    public void setAuthTag(String authTag) { this.authTag = authTag; }
 }

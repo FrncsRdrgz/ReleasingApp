@@ -38,7 +38,7 @@ public class ReleasingAdapter extends RecyclerView.Adapter<ReleasingAdapter.View
         this.scanTagClickedListener = scanTagClickedListener;
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textVariety, textPalletCode, textQuantity, textLotCode;
+        public TextView textVariety, textPalletCode, textQuantity, textLotCode,textAuthTag;
         public Button btnScanTag;
 
         public ViewHolder(View itemView) {
@@ -48,6 +48,7 @@ public class ReleasingAdapter extends RecyclerView.Adapter<ReleasingAdapter.View
             textQuantity = itemView.findViewById(R.id.testView);
             textLotCode = itemView.findViewById(R.id.lotCode);
             btnScanTag = itemView.findViewById(R.id.scan_tag);
+            textAuthTag = itemView.findViewById(R.id.auth_tag);
 
             btnScanTag.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,6 +80,7 @@ public class ReleasingAdapter extends RecyclerView.Adapter<ReleasingAdapter.View
         viewHolder.textVariety.setText(seed.getVariety());
         viewHolder.textPalletCode.setText(seed.getPallet_code());
         viewHolder.textLotCode.setText(seed.getLotCode());
+        viewHolder.textAuthTag.setText(seed.getAuthTag());
 
         if(seed.getVerified().equals("1")){
             viewHolder.btnScanTag.setText("Verified");

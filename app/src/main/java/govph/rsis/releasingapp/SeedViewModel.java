@@ -38,4 +38,8 @@ public class SeedViewModel extends AndroidViewModel {
         return isNotVerified = database.seedDao().isNotVerified(orderId);
     }
 
+    public void deleteById(String orderId){
+        database.seedDao().deleteById(orderId);
+    }
+
 }
