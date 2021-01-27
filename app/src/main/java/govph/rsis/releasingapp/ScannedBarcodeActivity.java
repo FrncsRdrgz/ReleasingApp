@@ -93,9 +93,11 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                                 case "ScanFragment":
 
                                     getSeedDetails(result.toString());
+                                    dialog.hide();
                                     break;
                                 case "LoginActivity":
                                     loginUser(result.toString());
+                                    dialog.hide();
                                     break;
                             }
                         }

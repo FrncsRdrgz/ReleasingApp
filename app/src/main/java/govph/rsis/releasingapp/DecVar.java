@@ -8,6 +8,6 @@ public class DecVar {
         String training = "https://rsistraining.philrice.gov.ph/seed_ordering/api";
         String localhost = "http://192.168.0.187/seed_ordering/api";
 
-        return staging;
+        return production;
     }
 }
