@@ -160,6 +160,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.e(TAG, "onResponse: "+response );
                         dialog.dismiss();
                         if(response.isEmpty() || response.equals("[]")) {
                             new AlertDialog.Builder(ScannedBarcodeActivity.this)
