@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewUser"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@id/tvTransaction"
+        android:gravity="center"
+        android:textSize="18sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTransaction"
+        android:text="List of Transactions"
+        android:gravity="center"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@id/lTitle"
+        android:textSize="18sp"
+        />
+    <LinearLayout
+        android:id="@+id/lTitle"
+        android:layout_above="@id/linearRvTr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/border"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:id="@+id/sgListName"
+            android:background="@drawable/border"
+            android:text="Full Name"
+            android:layout_weight="2"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:id="@+id/listOrderId"
+            android:background="@drawable/border"
+            android:text="SPA No."
+            android:layout_weight="3"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:id="@+id/listAction"
+            android:background="@drawable/border"
+            android:layout_weight="3"
+            android:text="Status"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearRvTr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linearRsisLogoTr">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAllOrder"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_height="300dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearRsisLogoTr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linearCopyrightTr">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_above="@+id/copyright"
+            app:srcCompat="@drawable/rsis_logo" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearCopyrightTr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linearVersionTr"
+        >
+        <TextView
+            android:text="@string/copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearVersionTr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linearNavViewTr">
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="2dp"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearNavViewTr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/bottom_nav_menu" />
+    </LinearLayout>
+</RelativeLayout>

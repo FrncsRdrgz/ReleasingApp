@@ -19,6 +19,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-   <string name="server_success">Success sending to server.</string>
+    <string name="server_success">Success sending to server.</string>
 
 </resources>

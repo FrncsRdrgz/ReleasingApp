@@ -6,29 +6,50 @@
     android:layout_height="match_parent"
     tools:context="govph.rsis.releasingapp.SeedDetailsActivity">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible"
-        android:id="@+id/frameLayoutScanner">
-
-        <com.budiyev.android.codescanner.CodeScannerView
-            android:id="@+id/scanner_view2"
+        android:id="@+id/relativeLayoutScanner">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:autoFocusButtonColor="@android:color/white"
-            app:autoFocusButtonVisible="true"
-            app:flashButtonColor="@android:color/white"
-            app:flashButtonVisible="true"
-            app:frameColor="@android:color/white"
-            app:frameCornersSize="50dp"
-            app:frameCornersRadius="0dp"
-            app:frameAspectRatioWidth="1"
-            app:frameAspectRatioHeight="1"
-            app:frameSize="0.75"
-            app:frameThickness="2dp"
-            app:maskColor="#77000000"/>
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/scannerBtnLin">
+            <Button
+                android:id="@+id/scannerBackBtn"
+                android:layout_width="42dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/go_back" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scannerBtnLin"
+            >
+
+            <com.budiyev.android.codescanner.CodeScannerView
+                android:id="@+id/scanner_view2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:autoFocusButtonColor="@android:color/white"
+                app:autoFocusButtonVisible="true"
+                app:flashButtonColor="@android:color/white"
+                app:flashButtonVisible="true"
+                app:frameColor="@android:color/white"
+                app:frameCornersSize="50dp"
+                app:frameCornersRadius="0dp"
+                app:frameAspectRatioWidth="1"
+                app:frameAspectRatioHeight="1"
+                app:frameSize="0.75"
+                app:frameThickness="2dp"
+                app:maskColor="#77000000">
+
+            </com.budiyev.android.codescanner.CodeScannerView>
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"

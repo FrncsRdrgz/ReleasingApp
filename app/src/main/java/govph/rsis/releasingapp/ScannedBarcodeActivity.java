@@ -47,6 +47,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
     private static final String TAG = "ScannedBarcodeActivity";
     public static final String EXTRA_RESULT = "com.example.releasingapp.EXTRA_RESULT";
     public static final String EXTRA_SPA = "com.example.releasingapp.EXTRA_SPA";
+    public static final String SCANNED_QR = "com.example.releasingapp.MESSAGE";
     private int CAMERA_PERMISSION_CODE = 1;
     private CodeScanner mCodeScanner;
     private boolean mPermissionCameraGranted;
@@ -91,13 +92,12 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                             dialog.show();
                             switch (sender){
                                 case "ScanFragment":
-
                                     getSeedDetails(result.toString());
-                                    dialog.hide();
+
                                     break;
                                 case "LoginActivity":
                                     loginUser(result.toString());
-                                    dialog.hide();
+
                                     break;
                             }
                         }
@@ -163,7 +163,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e(TAG, "onResponse: "+response );
-                        dialog.dismiss();
+                        dialog.hide();
                         if(response.isEmpty() || response.equals("[]")) {
                             new AlertDialog.Builder(ScannedBarcodeActivity.this)
                                     .setMessage("INCORRECT SPA NUMBER")
@@ -200,6 +200,11 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
         };
 
         queue.add(sr);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void saveSeedDetails(String response){
@@ -274,13 +279,15 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                         String fullName = temp.getString("fullname");
                         //checking if idNo already exists in database
                         if (database.userDao().isExisting(idNo) == 0) {
+                            Log.e(TAG, "onResponse: test" );
                             //inserting new user to database
                             User user = new User(idNo,fullName,true);
                             userViewModel.insert(user);
                         }
                         else{
-                            User user = new User(idNo,fullName,true);
-                            userViewModel.update(user);
+                            Log.e(TAG, "onResponse: " );
+                            database.userDao().updateStatusOnline(idNo);
+                            //userViewModel.update(user);
                         }
 
                     } catch (JSONException e) {

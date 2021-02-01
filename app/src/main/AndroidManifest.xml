@@ -13,12 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="govph.rsis.releasingapp.SelectUserActivity" />
-        <activity android:name="govph.rsis.releasingapp.SeedDetailsActivity" />
-        <activity android:name="govph.rsis.releasingapp.SwitchAccountActivity" />
-        <activity android:name="govph.rsis.releasingapp.ScannedBarcodeActivity" />
-        <activity android:name="govph.rsis.releasingapp.LoginActivity" />
-        <activity android:name="govph.rsis.releasingapp.MainActivity">
+        <activity android:name=".TransactionActivity"></activity>
+        <activity android:name=".SelectUserActivity" />
+        <activity android:name=".SeedDetailsActivity" />
+        <activity android:name=".SwitchAccountActivity" />
+        <activity android:name=".ScannedBarcodeActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +27,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="govph.rsis.releasingapp.HomeActivity"
-            android:parentActivityName="govph.rsis.releasingapp.MainActivity">
+            android:name=".HomeActivity"
+            android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data

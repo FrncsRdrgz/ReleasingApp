@@ -13,12 +13,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,12 +55,12 @@ public class SeedDetailsActivity extends AppCompatActivity {
     TextView textSgName, textOrderNo;
     private UserDatabase database;
     Intent intent;
-    Button releasedBtn, scanTag;
+    Button releasedBtn, scanTag, scannerBackBtn;
     User user;
     LayoutInflater inflater;
     AlertDialog dialog;
     EditText etOrderNo;
-    FrameLayout frameLayout;
+    RelativeLayout relativeLayout;
     ScrollView scrollView;
 
     CodeScanner mCodeScanner;
@@ -77,6 +79,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
         textOrderNo = findViewById(R.id.orderNo);
         releasedBtn = findViewById(R.id.releaseBtn);
         etOrderNo = findViewById(R.id.orNo);
+        scannerBackBtn = (Button) findViewById(R.id.scannerBackBtn);
 
         inflater = getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -119,13 +122,22 @@ public class SeedDetailsActivity extends AppCompatActivity {
             Log.e(TAG, "Zero na" );
             releasedBtn.setVisibility(View.VISIBLE);
         }
-
+        scannerBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayoutScanner);
+                relativeLayout.setVisibility(View.INVISIBLE);
+                scrollView = (ScrollView) findViewById(R.id.scrollView);
+                scrollView.setVisibility(View.VISIBLE);
+                mCodeScanner.releaseResources();
+            }
+        });
         adapter.setScanTagClickedListener(new ReleasingAdapter.scanTagClicked() {
             @Override
             public void scanTag(final Seed seeds, int position , final View v) {
                 Log.e(TAG, "scanTag: "+position );
-                frameLayout = (FrameLayout) findViewById(R.id.frameLayoutScanner);
-                frameLayout.setVisibility(View.VISIBLE);
+                relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayoutScanner);
+                relativeLayout.setVisibility(View.VISIBLE);
                 scrollView = (ScrollView) findViewById(R.id.scrollView);
                 scrollView.setVisibility(View.INVISIBLE);
 
@@ -136,7 +148,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
                         SeedDetailsActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
+                                dialog.show();
                                 //scanAuthTag(result.getText(),seeds.getPallet_code());
                                 RequestQueue queue = Volley.newRequestQueue(SeedDetailsActivity.this);
                                 final String url = DecVar.receiver()+"/checkTag/"+result.getText()+"/"+seeds.getPallet_code();
@@ -148,38 +160,27 @@ public class SeedDetailsActivity extends AppCompatActivity {
                                     public void onResponse(String response) {
                                         Log.e(TAG, "onResponse: "+response );
                                         if (response.isEmpty() || response.equals("[]")) {
-                                            new androidx.appcompat.app.AlertDialog.Builder(SeedDetailsActivity.this)
-                                                    .setMessage("Incorrect Tag")
-                                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            mCodeScanner.startPreview();
-                                                        }
-                                                    })
-                                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                                            frameLayout = (FrameLayout) findViewById(R.id.frameLayoutScanner);
-                                                            frameLayout.setVisibility(View.INVISIBLE);
-                                                            scrollView = (ScrollView) findViewById(R.id.scrollView);
-                                                            scrollView.setVisibility(View.VISIBLE);
-                                                        }
-                                                    }).show();
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    dialog.hide();
+                                                    mCodeScanner.startPreview();
+                                                }
+                                            },300);
                                             Toast.makeText(SeedDetailsActivity.this, "Sorry, wrong authenticity tag", Toast.LENGTH_SHORT).show();
                                         } else {
                                             seeds.setVerified("1");
                                             seeds.setAuthTag(result.getText());
 
                                             seedViewModel.update(seeds);
-
-
-
                                             try {
                                                 Toast.makeText(SeedDetailsActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
-                                                frameLayout = (FrameLayout) findViewById(R.id.frameLayoutScanner);
-                                                frameLayout.setVisibility(View.INVISIBLE);
+                                                relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayoutScanner);
+                                                relativeLayout.setVisibility(View.INVISIBLE);
                                                 scrollView = (ScrollView) findViewById(R.id.scrollView);
                                                 scrollView.setVisibility(View.VISIBLE);
+                                                mCodeScanner.releaseResources();
                                                 //decoding json object w/out array
                                                 JSONObject temp = new JSONObject(response);
                                                 //checking if idNo already exists in database
@@ -200,7 +201,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        dialog.dismiss();
+                                        dialog.hide();
                                         Toast.makeText(SeedDetailsActivity.this, "Unexpected response error code", Toast.LENGTH_SHORT).show();
                                         VolleyLog.e("Error: " + error);
                                     }
@@ -253,6 +254,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        dialog.hide();
         /*frameLayout = (FrameLayout) findViewById(R.id.frameLayoutScanner);
         frameLayout.setVisibility(View.INVISIBLE);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -267,8 +269,9 @@ public class SeedDetailsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        dialog.dismiss();
+
                         if(response.equals("success")){
+                            dialog.hide();
                             new AlertDialog.Builder(SeedDetailsActivity.this)
                                     .setTitle("Release Successfully")
                                     .setMessage("This order has been released.")
