@@ -172,7 +172,7 @@ public class SeedDetailsActivity extends AppCompatActivity {
                                         } else {
                                             seeds.setVerified("1");
                                             seeds.setAuthTag(result.getText());
-
+                                            dialog.hide();
                                             seedViewModel.update(seeds);
                                             try {
                                                 Toast.makeText(SeedDetailsActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
