@@ -5,120 +5,41 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="govph.rsis.releasingapp.HomeActivity">
+    tools:context="govph.rsis.seedreleasingapp.HomeActivity">
 
-        <LinearLayout
-            android:id="@+id/linear1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/homeBackBtn"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/go_back" />
-            <TextView
-                android:id="@+id/tvLogout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingTop="8dp"
-                android:paddingRight="15dp"
-                android:textSize="20sp"
-                android:text="Logout" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear2"
-            android:layout_below="@+id/linear1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
-
-
-            <TextView
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="30sp"
-                android:autoSizeTextType="uniform"
-                android:layout_weight="1"
-                android:text="Releasing App"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linear3"
-            android:layout_below="@+id/linear2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
-
-            <TextView
-                android:gravity="center"
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="15sp"
-                android:autoSizeTextType="uniform"
-                android:layout_weight="1"
-                />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnScanBarcode"
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-            android:layout_centerInParent="true"
-            android:background="@mipmap/qr_foreground" />
-        <TextView
-            android:id="@+id/tvscanqrcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Touch to scan QR CODE"
-            android:layout_above="@id/btnScanBarcode"
-            android:layout_centerInParent="true"
-            android:textSize="20sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SPA Control Number"
-            android:layout_below="@id/btnScanBarcode"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"/>
-
-    <LinearLayout
-        android:id="@+id/linearCopyright"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/linearVersion"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linearUserFooter"
         >
-        <TextView
-            android:text="@string/copyright"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="20sp" />
-    </LinearLayout>
-
+    </FrameLayout>
     <LinearLayout
-        android:id="@+id/linearVersion"
+        android:id="@+id/linearUserFooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/linearNavView">
+        android:layout_above="@id/linearNavView"
+        android:background="#CCCBCB"
+        android:orientation="horizontal"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp">
         <TextView
-            android:id="@+id/tvVersion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="2dp"
-            android:textSize="10sp" />
+            android:id="@+id/staticName"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1.3"
+            android:text="User: Juan Dela Cruz"/>
+        <TextView
+            android:id="@+id/staticVersion"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".7"
+            android:text="Version: 1"/>
     </LinearLayout>
-
-
     <LinearLayout
         android:id="@+id/linearNavView"
         android:layout_width="match_parent"
@@ -131,7 +52,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            android:background="?android:attr/windowBackground"
+            app:labelVisibilityMode="labeled"
+            app:itemTextColor="@drawable/item_selected"
+            app:itemIconTint="@drawable/item_selected"
+            android:background="#006C35"
             app:menu="@menu/bottom_nav_menu" />
     </LinearLayout>
 

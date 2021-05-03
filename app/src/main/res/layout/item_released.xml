@@ -29,6 +29,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border"
+            android:text="Variety"
             android:padding="5dp"/>
     </LinearLayout>
 
@@ -45,7 +46,7 @@
             android:layout_weight="1"
             android:background="@drawable/border"
             android:padding="5dp"
-            android:text="Pallet Code" />
+            android:text="Pallet ID" />
 
         <TextView
             android:id="@+id/palletCode"
@@ -53,6 +54,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/border"
             android:padding="5dp"
+            android:text="1"
             android:layout_weight="1" />
     </LinearLayout>
 
@@ -67,7 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Lot Code"
+            android:text="Lot No."
             android:background="@drawable/border"
             android:padding="5dp"
             />
@@ -77,6 +79,7 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="A1"
             android:background="@drawable/border"
             android:padding="5dp"/>
     </LinearLayout>
@@ -103,6 +106,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/border"
+            android:text="30"
             android:padding="5dp"/>
     </LinearLayout>
 
@@ -117,6 +121,7 @@
             android:id="@+id/scan_tag"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:text="Verified"
             />
 
         <TextView
@@ -126,6 +131,7 @@
             android:layout_weight="1"
             android:background="@drawable/border"
             android:textSize="20dp"
+            android:text="CES-000001, CES-000002, CES-000003"
             android:padding="5dp"/>
     </LinearLayout>
 

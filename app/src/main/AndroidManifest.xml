@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="govph.rsis.releasingapp">
+    package="govph.rsis.seedreleasingapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/rsis_logo"
+        android:icon="@mipmap/releasing_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/rsis_logo"
+        android:roundIcon="@mipmap/releasing_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TransactionActivity"></activity>
-        <activity android:name=".SelectUserActivity" />
-        <activity android:name=".SeedDetailsActivity" />
-        <activity android:name=".SwitchAccountActivity" />
-        <activity android:name=".ScannedBarcodeActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="govph.rsis.seedreleasingapp.TransactionActivity"></activity>
+        <activity android:name="govph.rsis.seedreleasingapp.SelectUserActivity" />
+        <activity android:name="govph.rsis.seedreleasingapp.SeedDetailsActivity" />
+        <activity android:name="govph.rsis.seedreleasingapp.SwitchAccountActivity" />
+        <activity android:name="govph.rsis.seedreleasingapp.ScannedBarcodeActivity" />
+        <activity android:name="govph.rsis.seedreleasingapp.LoginActivity" />
+        <activity android:name="govph.rsis.seedreleasingapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,13 +27,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="govph.rsis.seedreleasingapp.HomeActivity"
+            android:parentActivityName="govph.rsis.seedreleasingapp.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="govph.rsis.releasingapp.MainActivity" />
+                android:value="govph.rsis.seedreleasingapp.MainActivity" />
         </activity>
     </application>
 

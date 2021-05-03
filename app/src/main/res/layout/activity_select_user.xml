@@ -4,72 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="govph.rsis.releasingapp.SwitchAccountActivity">
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="280dp"
-        android:layout_height="211dp"
-        android:layout_above="@+id/tView1"
-        android:layout_centerInParent="true"
-        app:srcCompat="@drawable/rsis_logo" />
-    <TextView
-        android:id="@+id/tView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="List of Users"
-        android:layout_marginTop="20dp"
-        android:layout_centerInParent="true"
-        android:textSize="30sp"/>
-
-    <!--<ListView
-        android:id="@+id/usersList"
-        android:layout_width="413dp"
-        android:layout_height="725dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.036"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--<Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="onClick"
-        android:text="@string/scan_barcode"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />-->
+    tools:context="govph.rsis.seedreleasingapp.SwitchAccountActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-
         android:id="@+id/myAccounts"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_below="@id/tView1"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginTop="20dp" />
 
-    <TextView
-        android:text="@string/copyright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_above="@id/tvVersion1"
-        android:textSize="20sp" />
-    <TextView
-        android:id="@+id/tvVersion1"
-        android:text="version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="0dp"
-        android:textSize="10sp" />
 </RelativeLayout>

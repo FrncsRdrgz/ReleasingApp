@@ -17,15 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="18sp"
-            android:id="@+id/sgListName"
-            android:background="@drawable/border"
-            android:gravity="center"
-            android:layout_weight="2"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="18sp"
             android:id="@+id/listOrderId"
             android:background="@drawable/border"
             android:gravity="center"

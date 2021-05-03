@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="govph.rsis.seedreleasingapp.SeedDetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/sdf_order_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/sg_details"
+            android:paddingTop="15dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="15dp"
+            android:background="#D1D1D1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:padding="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Seed Grower:"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_weight=".5"
+                    />
+                <TextView
+                    android:id="@+id/sdf_grower_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:textSize="18sp"
+                    android:textColor="#096D31"
+                    android:textStyle="bold"
+                    android:text="Pedro Dela Cruz"/>
+            </LinearLayout>
+            <LinearLayout
+                android:padding="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Order No.:"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_weight=".5"
+                    />
+                <TextView
+                    android:id="@+id/sdf_order_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:textSize="18sp"
+                    android:textColor="#096D31"
+                    android:textStyle="bold"
+                    android:text="000001"/>
+            </LinearLayout>
+            <LinearLayout
+                android:padding="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="OR No.:"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_weight=".5"
+                    />
+                <EditText
+                    android:id="@+id/sdf_order_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:textSize="18sp"
+                    android:textColor="#096D31"
+                    android:textStyle="bold"
+                    android:hint="Enter OR no."
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/sg_details"
+            android:layout_above="@id/release_btn">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="15dp"
+                tools:listitem="@layout/item_released"/>
+        </ScrollView>
+        <Button
+            android:id="@+id/release_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/success_button"
+            android:text="@string/release"
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sdf_camera_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/scanner_back_btn"
+            android:layout_width="42dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/go_back" />
+        <com.budiyev.android.codescanner.CodeScannerView
+            android:id="@+id/fragmentCodeScanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:autoFocusButtonColor="@android:color/white"
+            app:autoFocusButtonVisible="true"
+            app:flashButtonColor="@android:color/white"
+            app:flashButtonVisible="true"
+            app:frameColor="@android:color/white"
+            app:frameCornersSize="50dp"
+            app:frameCornersRadius="0dp"
+            app:frameAspectRatioWidth="1"
+            app:frameAspectRatioHeight="1"
+            app:frameSize="0.75"
+            app:frameThickness="2dp"
+            app:maskColor="#77000000"/>
+    </RelativeLayout>
+
+</RelativeLayout>

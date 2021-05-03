@@ -1,56 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="govph.rsis.releasingapp.SwitchAccountActivity">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#006C35">
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="280dp"
-        android:layout_height="211dp"
-        android:layout_above="@+id/btnSelectUser"
-        android:layout_centerInParent="true"
-        app:srcCompat="@drawable/rsis_logo" />
-
-    <Button
-        android:id="@+id/btnSelectUser"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/scanLinear"
+        app:srcCompat="@drawable/releasing_logo"
+        android:background="#FFFF"
+        />
+    <LinearLayout
+        android:id="@+id/scanLinear"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="SELECT USERS"
-        android:paddingRight="30dp"
-        android:paddingLeft="30dp"
-        android:onClick="selectUser"
-        android:layout_centerInParent="true" />
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
 
-    <Button
-        android:id="@+id/btnNewUser"
-        android:layout_below="@id/btnSelectUser"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#CCCECD"
+            android:text="@string/app_name"/>
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/btnSelectUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#F8B21F"
+            android:textColor="#092907"
+            android:textSize="20sp"
+            android:onClick="selectUser"
+            android:padding="15dp"
+            android:text="SELECT USER"
+            />
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/btnAddNewUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#F8B21F"
+            android:textColor="#092907"
+            android:textSize="20sp"
+            android:onClick="addNewUser"
+            android:padding="15dp"
+            android:text="ADD NEW USER"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="ADD NEW USERS"
-        android:paddingRight="30dp"
-        android:paddingLeft="30dp"
-        android:onClick="addNewUser"
-        android:layout_centerInParent="true" />
-
-    <TextView
         android:layout_above="@id/tvVersion"
-        android:text="@string/copyright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="0dp"
-        android:textSize="20sp" />
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        >
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/dalight"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/da_barwhite"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/bpiwhite"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/philricegray"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/tvVersion"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Version 1"
+        android:gravity="center"
+        android:layout_above="@id/switch_account_copyright"
+        android:textColor="#A1BCAA"
+        />
+    <TextView
+        android:id="@+id/switch_account_copyright"
+        android:text="@string/copyright"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="2dp"
-        android:textSize="10sp" />
+        android:gravity="center"
+        android:textColor="#A1BCAA"
+        android:paddingBottom="50dp"/>
 </RelativeLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/homeLinearImage"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/header"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/homeVersionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ReleasingApp 2.0"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_marginTop="60dp"
+            android:textColor="#FFFF"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_below="@id/homeLinearImage"
+        android:id="@+id/homeTextViewUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#006C35"
+        android:textColor="#FFFF"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:text="Welcome! Juan Dela Cruz"/>
+    <TextView
+        android:layout_below="@id/homeTextViewUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="70dp"
+        android:paddingEnd="70dp"
+        android:id="@+id/homeText"
+        android:text="This app is used for the seed ordering process of RSIS with authenticity function"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/homeText"
+        android:gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="180dp"
+            android:padding="15dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/scan"/>
+            <TextView
+                android:layout_width="80dp"
+                android:paddingTop="10dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Scan SPA control number"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="180dp"
+            android:padding="15dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/transaction"/>
+            <TextView
+                android:layout_width="80dp"
+                android:paddingTop="10dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Transaction List"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="180dp"
+            android:padding="15dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/logout"/>
+            <TextView
+                android:layout_width="80dp"
+                android:paddingTop="10dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Logout"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/copyright"
+        android:layout_above="@id/homeAppName"
+        android:textSize="12sp"
+        android:gravity="center"/>
+    <TextView
+        android:paddingBottom="20dp"
+        android:id="@+id/homeAppName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/app_name"
+        android:textSize="12sp"
+        android:gravity="center"/>-->
+
+</RelativeLayout>

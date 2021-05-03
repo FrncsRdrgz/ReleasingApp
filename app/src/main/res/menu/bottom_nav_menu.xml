@@ -2,12 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_scan"
-        android:icon="@drawable/ic_center_focus_weak_black_24dp"
-        android:title="Scan" />
+        android:id="@+id/nav_home"
+        android:icon="@drawable/homeicon"
+        android:title="HOME"
+        />
     <item
-        android:id="@+id/navigation_list"
-        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
-        android:title="Transaction List" />
+        android:id="@+id/nav_scan"
+        android:icon="@drawable/scanw"
+        android:title="SCAN" />
+    <item
+        android:id="@+id/nav_list"
+        android:icon="@drawable/transactionw"
+        android:title="TRANSACTION"
+        />
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/logoutw"
+        android:title="LOGOUT"
+        />
+
 
 </menu>

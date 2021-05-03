@@ -4,99 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
     <TextView
+        android:id="@+id/transactionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewUser"
-        android:layout_marginBottom="15dp"
-        android:layout_above="@id/tvTransaction"
-        android:gravity="center"
-        android:textSize="18sp"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvTransaction"
-        android:text="List of Transactions"
-        android:gravity="center"
-        android:layout_marginBottom="15dp"
-        android:layout_above="@id/lTitle"
-        android:textSize="18sp"
+        android:textSize="23sp"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:textColor="#136E21"
+        android:text="Transaction List : (count)"
         />
     <LinearLayout
-        android:id="@+id/lTitle"
-        android:layout_above="@id/rvAllOrder"
+        android:layout_below="@id/transactionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/border"
+        android:id="@+id/linearHeader"
+        android:visibility="gone"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        >
+        android:layout_marginTop="8dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="18sp"
-            android:gravity="center"
-            android:id="@+id/sgListName"
             android:background="@drawable/border"
-            android:text="Full Name"
-            android:layout_weight="2"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:gravity="center"
-            android:id="@+id/listOrderId"
-            android:background="@drawable/border"
-            android:text="SPA No."
+            android:text="Order Number"
             android:layout_weight="3"
             />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="18sp"
-            android:gravity="center"
-            android:id="@+id/listAction"
-            android:background="@drawable/border"
             android:layout_weight="3"
+            android:gravity="center"
             android:text="Status"
-            />
+            android:backgroundTint="#2196F3"
+             />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_above="@+id/copyright"
-        android:layout_centerInParent="true"
-        app:srcCompat="@drawable/rsis_logo" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAllOrder"
-        android:layout_above="@id/imageView2"
+        android:id="@+id/rv_released_order"
         android:layout_width="match_parent"
-        android:layout_marginBottom="15dp"
-        android:layout_height="300dp" />
+        android:layout_height="match_parent"
+        android:padding="10sp"
+        android:layout_below="@id/linearHeader"
+        android:visibility="gone"/>
+    <TextView
+        android:layout_below="@id/linearHeader"
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No Records found."
 
-    <TextView
-        android:id="@+id/copyright"
-        android:text="@string/copyright"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_above="@id/tvVersion"
-        android:textSize="20sp" />
-    <TextView
-        android:id="@+id/tvVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="2dp"
-        android:textSize="10sp" />
+        android:visibility="visible"/>
 </RelativeLayout>

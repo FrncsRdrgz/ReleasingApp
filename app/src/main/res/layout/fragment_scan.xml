@@ -1,130 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/scannerLayout"
-        android:visibility="invisible"
+    <com.budiyev.android.codescanner.CodeScannerView
+        android:id="@+id/fragmentCodeScanner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.budiyev.android.codescanner.CodeScannerView
-            android:id="@+id/scanner_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:autoFocusButtonColor="@android:color/white"
-            app:autoFocusButtonVisible="true"
-            app:flashButtonColor="@android:color/white"
-            app:flashButtonVisible="true"
-            app:frameColor="@android:color/white"
-            app:frameCornersSize="50dp"
-            app:frameCornersRadius="0dp"
-            app:frameAspectRatioWidth="1"
-            app:frameAspectRatioHeight="1"
-            app:frameSize="0.75"
-            app:frameThickness="2dp"
-            app:maskColor="#77000000"/>
-    </FrameLayout>
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/linear1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tvLogout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingTop="8dp"
-                android:paddingRight="15dp"
-                android:textSize="20sp"
-                android:text="Logout" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear2"
-            android:layout_below="@+id/linear1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
-
-
-            <TextView
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="30sp"
-                android:autoSizeTextType="uniform"
-                android:layout_weight="1"
-                android:text="Releasing App"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linear3"
-            android:layout_below="@+id/linear2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
-
-            <TextView
-                android:gravity="center"
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="15sp"
-                android:autoSizeTextType="uniform"
-                android:layout_weight="1"
-                />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnScanBarcode"
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-            android:layout_centerInParent="true"
-            android:background="@mipmap/qr_foreground" />
-        <TextView
-            android:id="@+id/tvscanqrcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Touch to scan QR CODE"
-            android:layout_above="@id/btnScanBarcode"
-            android:layout_centerInParent="true"
-            android:textSize="20sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SPA Control Number"
-            android:layout_below="@id/btnScanBarcode"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"/>
-        <TextView
-            android:text="@string/copyright"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/tvVersion"
-            android:layout_centerInParent="true"
-            android:textSize="20sp" />
-        <TextView
-            android:id="@+id/tvVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="2dp"
-            android:textSize="10sp" />
-    </RelativeLayout>
-
-</RelativeLayout>
+        android:layout_height="match_parent"
+        app:autoFocusButtonColor="@android:color/white"
+        app:autoFocusButtonVisible="true"
+        app:flashButtonColor="@android:color/white"
+        app:flashButtonVisible="true"
+        app:frameColor="@android:color/white"
+        app:frameCornersSize="50dp"
+        app:frameCornersRadius="0dp"
+        app:frameAspectRatioWidth="1"
+        app:frameAspectRatioHeight="1"
+        app:frameSize="0.75"
+        app:frameThickness="2dp"
+        app:maskColor="#77000000"/>
+</FrameLayout>

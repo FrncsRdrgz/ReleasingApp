@@ -1,51 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="2dp"
-    android:paddingLeft="2dp"
-    android:background="@color/backgroundColor"
-    android:paddingRight="2dp"
-    android:paddingTop="2dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#006C35">
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/scanLinear"
+        app:srcCompat="@drawable/releasing_logo"
+        android:background="#FFFF"
+        />
+    <LinearLayout
+        android:id="@+id/scanLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log In"
-        android:layout_above="@id/btnScanBarcode"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="50dp"
-        android:textSize="50sp"/>
-    <Button
-        android:id="@+id/btnScanBarcode"
-        android:layout_width="164dp"
-        android:layout_height="175dp"
-        android:layout_centerInParent="true"
-        android:background="@mipmap/qr_foreground" />
-    <TextView
-        android:id="@+id/tvscanqrcode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Touch to scan QR CODE"
-        android:layout_below="@id/btnScanBarcode"
-        android:layout_centerInParent="true"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="User's ID"
-        android:layout_below="@id/tvscanqrcode"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"
-        android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#CCCECD"
+            android:text="@string/app_name"/>
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/btnScanBarcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#F8B21F"
+            android:textColor="#092907"
+            android:textSize="20sp"
 
+            android:padding="15dp"
+            android:text="Scan ID"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/loginVersion"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        >
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/dalight"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/da_barwhite"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/bpiwhite"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/philricegray"/>
+    </LinearLayout>
     <TextView
+        android:id="@+id/loginVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Version 1"
+        android:gravity="center"
+        android:layout_above="@id/loginCopyright"
+        android:textColor="#A1BCAA"
+        />
+    <TextView
+        android:id="@+id/loginCopyright"
         android:text="@string/copyright"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="0dp"
-        android:textSize="20sp" />
+        android:gravity="center"
+        android:textColor="#A1BCAA"
+        android:paddingBottom="30dp"/>
 </RelativeLayout>
